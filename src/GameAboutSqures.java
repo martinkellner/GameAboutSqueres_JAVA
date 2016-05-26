@@ -40,19 +40,19 @@ public class GameAboutSqures extends Application {
 
     }
     private void animation(ArrayList<Squere> arrayList){}
-    private void	backStepAnimation(){}
-    private boolean	checkGame(){}
-    private void	checkPosition(){}
-    private void	inicializeLevels(){}
-    private void	levelFinishAimation(){}
+    private void backStepAnimation(){}
+    private boolean	checkGame(){return true;}
+    private void checkPosition(){}
+    private void inicializeLevels(){}
+    private void levelFinishAimation(){}
     private static void	main(java.lang.String[] args){}
-    private void	nextLevel(){}
-    private void	readFile(int i){}
-    void	restartLevel(){}
-    private javafx.scene.paint.Color returnColor(char c){}
-    private char	returnChar(char dir){}
-    private void	rotateAnimation(Squere s, char direction){}
-    private java.util.ArrayList<Squere>	selectSqueres(int i, int j){}
+    private void nextLevel(){}
+    private void readFile(int i){}
+    public void	restartLevel(){}
+    private Color returnColor(char c){return Color.YELLOW;}
+    private char returnChar(char dir){return dir};
+    private void rotateAnimation(Squere s, char direction){}
+    private ArrayList<Squere> selectSqueres(int i, int j){return new ArrayList<>();}
 
 
 }
