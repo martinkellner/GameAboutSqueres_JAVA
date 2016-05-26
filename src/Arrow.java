@@ -10,8 +10,8 @@ public class Arrow extends Circle{
     private double size;
 
     public Arrow(double i, double j, char direction){}
-
-    public char getDirection(){return direction;};
+    
+    public char getDirection(){return direction;}
     private void setRotation(){};
 
 }
