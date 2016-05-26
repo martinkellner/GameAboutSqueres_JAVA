@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class GameAboutSqures extends Application {
     private LevelPanel	levelPanel;
     private java.io.File[]	levels;
     private Playground	playground;
-    private Stage	primaryStage;
+    private Stage primaryStage;
     private ImageButton	restart;
     private boolean	runAnimation;
     private VBoxRight vBoxRight;
