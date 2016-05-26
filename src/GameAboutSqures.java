@@ -50,7 +50,7 @@ public class GameAboutSqures extends Application {
     private void readFile(int i){}
     public void	restartLevel(){}
     private Color returnColor(char c){return Color.YELLOW;}
-    private char returnChar(char dir){return dir};
+    private char returnChar(char dir){return dir;};
     private void rotateAnimation(Squere s, char direction){}
     private ArrayList<Squere> selectSqueres(int i, int j){return new ArrayList<>();}
 
