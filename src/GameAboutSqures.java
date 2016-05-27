@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -31,6 +32,27 @@ public class GameAboutSqures extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        array = new Squere[7][7];
+        arrows = new Arrow[7][7];
+        balls = new Ball[7][7];
+        arrayListSqures = new ArrayList<>();
+
+        borderPane = new BorderPane();
+        borderPane.setPrefSize(700,600);
+        playground = new Playground(borderPane);
+        vBoxRight = new VBoxRight();
+        borderPane.setLeft(playground);
+        borderPane.setRight(playground);
+
+        Scene scene = new Scene(borderPane);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Game About Squeres");
+        primaryStage.show();
+
+
+
+
 
     }
     private void actionForButton(int ind){
