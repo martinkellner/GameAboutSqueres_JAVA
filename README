@@ -1,0 +1,21 @@
+Cielom hry je dostat stvorceky sa miesto lopticky rovnekej farby.
+
+Kodovanie suborov pre levely:
+
+    prvy znak je urcuje objekt:
+        s - kocka
+        b - lopticka
+        a - sipka
+    druhy a treti znak:
+        i a j suradnice v dvojrozmernom poli na zaklade suradnic sa vypocita pohoha v grafickej polche
+    stvrty znak:
+        ak ide o kocku:
+            farba - b(blue) , o(orange), r(red) g(green)
+            piaty znak ma len kocka - urcuje smer natocenia sipky
+        ak ide o lopticku:
+            farba - b(blue) , o(orange), r(red) g(green)
+        ak ide o sipku:
+            urcuje smer natocenia sipky
+
+Vsetky obrazky su z iconfinder.com (su free)
+Projekt vytvoril Martin Kellner na predmet Programovanie4

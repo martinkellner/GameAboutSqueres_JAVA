@@ -11,17 +11,19 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
+ * Hlavna trieda, aplikacia
  * Created by martin on 26.5.2016.
  */
 public class GameAboutSqures extends Application {
 
     private Squere[][]	array;
-    private ArrayList<Squere>	arrayListSqures;
+    private ArrayList<Squere> arrayListSqures;
     private Arrow[][] arrows;
     private ImageButton	back;
     private Ball[][] balls;
     private static BorderPane borderPane;
     private ImageButton	grid;
+    private ArrayList<ImageButton> buttons;
     private ArrayList<Character> lastDir;
     private ArrayList<ArrayList<Squere>> lastSteps;
     private ArrayList<ArrayList<Character>>	lastStepsDir;
@@ -33,9 +35,15 @@ public class GameAboutSqures extends Application {
     private ImageButton	restart;
     private boolean	runAnimation;
     private VBoxRight vBoxRight;
-
+    private Stage newStage;
     public static void main(String[] args){launch(args);}
 
+    /**
+     * Funkcia nainicializuje komponenty grafiky, taktiez polia a JavaCollections a
+     * nastavi akcie pre klikania a tlacidla
+     * @param primaryStage hlavna plocha
+     * @throws Exception vyhodenie vynimky
+     */
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -56,6 +64,7 @@ public class GameAboutSqures extends Application {
         vBoxRight = new VBoxRight(borderPane);
         borderPane.setLeft(playground);
         borderPane.setRight(vBoxRight);
+        levelPanel = new LevelPanel();
         inicializeLevels();
         readFile(0);
 
@@ -74,6 +83,27 @@ public class GameAboutSqures extends Application {
             }
         });
 
+        newStage = levelPanel.getNewStage();
+        grid = vBoxRight.getGrid();
+        grid.setOnMousePressed(event -> {
+            primaryStage.hide();
+            newStage.show();
+        });
+
+        buttons = levelPanel.getButtons();
+        for (ImageButton button: buttons) button.setOnMousePressed(event -> {
+            try {
+                actionForButton(buttons.indexOf(button));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        newStage.setOnCloseRequest(event -> {
+            levelPanel.hideStage();
+            primaryStage.show();
+        });
+
         playground.setOnMouseClicked(event -> {
             if (!runAnimation){
                 for (int i = 0; i < array.length;i++){
@@ -86,7 +116,6 @@ public class GameAboutSqures extends Application {
             }
         });
 
-
         this.primaryStage = primaryStage;
         Scene scene = new Scene(borderPane);
         this.primaryStage.setScene(scene);
@@ -95,10 +124,25 @@ public class GameAboutSqures extends Application {
         this.primaryStage.show();
 
     }
-    private void actionForButton(int ind){
+
+    /**
+     * Pri kliknuti na tlacidlo v ponuke levels sa spusti pozadovany level prisluchajuci tlacidlu
+     * @param ind cislo levelu
+     * @throws IOException vyhodenie vynimky pri nenajdeni suboru
+     */
+    private void actionForButton(int ind) throws IOException {
+
+        level = ind;
+        restartLevel();
+        levelPanel.hideStage();
+        primaryStage.show();
 
     }
-    private void aktualizeArray(){
+
+    /**
+     * Aktualizuje pole array na zaklade polohy kociek v graf. ploche
+     */
+     private void aktualizeArray(){
 
         array = new Squere[7][7];
 
@@ -110,6 +154,11 @@ public class GameAboutSqures extends Application {
         }
     }
 
+    /**
+     * Zisti si sa kocky mozu hybat, ak nie tak zatrasie kockou a
+     * ak ano posunie ich o smerom kocky na ktoru bolo kliknute. Taktiez si zapameta kroky pre krok spat.
+     * @param arrayList kocky ktore sa budu posuvat
+     */
     private void animation(ArrayList<Squere> arrayList){
 
         runAnimation = true;
@@ -167,6 +216,9 @@ public class GameAboutSqures extends Application {
         }
     }
 
+    /**
+     * Posunie kocky na ich predchazajuce miesto, ak su zapametane nejake kroky spat. Nastavi kockam predchadzajuci smer
+     */
     private void backStepAnimation(){
 
         if (!lastSteps.isEmpty()){
@@ -202,13 +254,16 @@ public class GameAboutSqures extends Application {
 
             });
             animation.play();
-
         }
         else{
             back.setDisable(true);
         }
     }
 
+    /**
+     * Skontroluje ci je level dokonceny.
+     * @return vrati true ak je level dokonceny, false ak nie.
+     */
     private boolean	checkGame(){
 
         for (int i = 0; i < array.length; i++){
@@ -225,6 +280,10 @@ public class GameAboutSqures extends Application {
 
     }
 
+    /**
+     * Nastavi tien ak sa nachadza kocka na lopte, spusti animaciu na otocenie sipky ak je kocka na sipke a oramuje
+     * kocku a
+     */
     private void checkPosition(){
 
         for (int i = 0; i < array.length; i++){
@@ -244,10 +303,7 @@ public class GameAboutSqures extends Application {
                     else{
                         array[i][j].setStrokeSquere(Color.GREY);
                     }
-
                 }
-
-
                 else if (array[i][j] != null){
                     array[i][j].setStrokeSquere(Color.TRANSPARENT);
                 }
@@ -255,6 +311,9 @@ public class GameAboutSqures extends Application {
         }
     }
 
+    /**
+     * nainicializuje pole files, kde ulozi levely.
+     */
     private void inicializeLevels(){
 
         levels = new File[16];
@@ -262,7 +321,9 @@ public class GameAboutSqures extends Application {
         for (int i = 0; i < 6; i++) levels[10+i] = new File("levels/level1"+String.valueOf(i)+".txt");
     }
 
-
+    /**
+     * Animacia na otocenie kociek pri uspesnom dokonceni levelu
+     */
     private void levelFinishAimation(){
 
         runAnimation = true;
@@ -291,12 +352,21 @@ public class GameAboutSqures extends Application {
 
     }
 
-    private void nextLevel() throws IOException {
+    /**
+     * Nacita dalsi level
+     * @throws IOException pri nenajdeni suboru
+     */
+     private void nextLevel() throws IOException {
         level++;
         restartLevel();
         runAnimation = false;
     }
 
+    /**
+     *
+     * @param i
+     * @throws IOException
+     */
     private void readFile(int i) throws IOException {
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(levels[i])));
@@ -355,6 +425,7 @@ public class GameAboutSqures extends Application {
         lastSteps.clear();
         lastStepsDir.clear();
         readFile(level);
+        runAnimation = false;
     }
 
     private char returnChar(char dir){

@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
 public class ImageButton extends Button {
 
     private String STYLE_NORMAL0 = "-fx-background-color: transparent;";
-    private String STYLE_NORMAL1 = "-fx-background-color: green;";
-    private String STYLE_PRESSED = "-fx-background-color:transparent;";
 
 
     public ImageButton(String imageurl, double size, String text){
@@ -23,12 +21,14 @@ public class ImageButton extends Button {
             setGraphic(new ImageView(image));
         }
         else{
-            setStyle(STYLE_NORMAL1);
-            setText(text);
+            if (Integer.valueOf(text)%2 == 0){
+                setStyle("-fx-background-color: lightskyblue");
+            }
+            else{
+                setStyle("-fx-background-color:lightgreen");
+            }
         }
+        setText(text);
     }
 
-    public String getSt(){
-        return STYLE_PRESSED;
-    }
 }
