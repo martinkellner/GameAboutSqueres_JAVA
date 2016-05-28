@@ -33,6 +33,7 @@ public class Squere extends Rectangle{
         setCircle();
         setFill(color);
         setRot();
+        setShadow();
     }
 
 
@@ -40,7 +41,7 @@ public class Squere extends Rectangle{
         if (dir == 'l' && getX()-getWidth() < 0){
             return false;
         }
-        else if(dir == 'r' && getX()+getWidth() > playground.getWidth()){
+        else if(dir == 'r' && getX()+getWidth() >= playground.getWidth()){
             return false;
         }
         else if(dir == 'u' && getY()-getHeight() < 0){
@@ -53,7 +54,28 @@ public class Squere extends Rectangle{
     }
 
     int	countCycle(char dir){
-        return 1;
+        int angle =0;
+        if (direction == 'r'){
+            if (dir == 'l') angle = 180;
+            if (dir == 'u') angle = 270;
+            if (dir == 'd') angle = 90;
+        }
+        if (direction == 'l'){
+            if (dir == 'r') angle = 180;
+            if (dir == 'u') angle = 90;
+            if (dir == 'd') angle = 270;
+        }
+        if (direction == 'd'){
+            if (dir == 'r') angle = 270;
+            if (dir == 'l') angle = 90;
+            if (dir == 'u') angle = 180;
+        }
+        if (direction == 'u'){
+            if (dir == 'l') angle = 270;
+            if (dir == 'r') angle = 90;
+            if (dir == 'd') angle = 180;
+        }
+        return angle;
     }
 
     Circle getCircle(){
@@ -96,7 +118,6 @@ public class Squere extends Rectangle{
             circle.setCenterY(circle.getCenterY()-1);
         }
         // mozno kreslenie
-
     }
 
     void rotate(){
@@ -133,11 +154,12 @@ public class Squere extends Rectangle{
     }
     private void setShadow(){
         shadow = new DropShadow();
-        shadow.setRadius(getHeight());
+        shadow.setRadius(86);
         shadow.setColor(Color.TRANSPARENT);
         shadow.setOffsetY(0);
         shadow.setOffsetX(0);
-        shadow.setSpread(0.6);
+        shadow.setSpread(0.7);
+        setEffect(shadow);
     }
     void setStrokeSquere(Color color){
 

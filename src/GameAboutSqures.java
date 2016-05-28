@@ -106,6 +106,7 @@ public class GameAboutSqures extends Application {
         for (Squere squere: arrayListSqures){
             int j = (int) (squere.getX()/Math.round(playground.getWidth()/7));
             int i = (int) (squere.getY()/Math.round(playground.getHeight()/7));
+            System.out.println(i + " " + j);
             array[i][j] = squere;
         }
     }
@@ -139,6 +140,12 @@ public class GameAboutSqures extends Application {
         animation0.setOnFinished(event -> {
             runAnimation = false;
             back.setDisable(false);
+            aktualizeArray();
+            checkPosition();
+            if (checkGame()){
+                levelFinishAimation();
+
+            }
         });
 
         Timeline animation1 = new Timeline(new KeyFrame(Duration.millis(10),event -> {
@@ -154,7 +161,6 @@ public class GameAboutSqures extends Application {
         animation1.setOnFinished(event -> {
             runAnimation = false;
         });
-
 
         if (canMove){
             animation0.play();
@@ -184,9 +190,18 @@ public class GameAboutSqures extends Application {
                 lastSteps.remove(lastSteps.size()-1);
                 lastStepsDir.remove(lastStepsDir.size()-1);
                 lastDir.remove(lastDir.size()-1);
+
+                for (Squere squere: squeres){
+                    squere.setDirection(characters.get(squeres.indexOf(squere)));
+                    squere.setRot();
+                }
+
                 if (!lastDir.isEmpty()){
                     back.setDisable(false);
                 }
+                aktualizeArray();
+                checkPosition();
+
             });
             animation.play();
 
@@ -194,14 +209,40 @@ public class GameAboutSqures extends Application {
         else{
             back.setDisable(true);
         }
+    }
 
+    private boolean	checkGame(){
 
+        for (int i = 0; i < array.length; i++){
+            for (int j = 0; j < array[i].length; j++){
+                if (array[i][j] != null && balls[i][j] !=null && array[i][j].getColor() != balls[i][j].getColor()){
+                    return false;
+                }
+            }
+        }
+        return true;
 
     }
 
-    private boolean	checkGame(){return true;}
+    private void checkPosition(){
 
-    private void checkPosition(){}
+        for (int i = 0; i < array.length; i++){
+            for (int j = 0; j < array[i].length; j++){
+                if (array[i][j] != null && balls[i][j] != null){
+                    array[i][j].setColorShadow(balls[i][j].getColor());
+                }
+                else if (array[i][j] != null){
+                    array[i][j].setTransparentShadow();
+                }
+
+                if (array[i][j] != null && arrows[i][j] != null){
+                    if (array[i][j].getDirection() != arrows[i][j].getDirection()){
+                        rotateAnimation(array[i][j],arrows[i][j].getDirection());
+                    }
+                }
+            }
+        }
+    }
 
     private void inicializeLevels(){
 
@@ -211,9 +252,38 @@ public class GameAboutSqures extends Application {
     }
 
 
-    private void levelFinishAimation(){}
+    private void levelFinishAimation(){
 
-    private void nextLevel(){}
+        runAnimation = true;
+
+        Timeline animation = new Timeline(new KeyFrame(Duration.millis(2),event -> {
+            for (Squere squere: arrayListSqures){
+                squere.rotate();
+            }
+        }));
+        animation.setCycleCount(360);
+        animation.setOnFinished(event -> {
+
+            back.setDisable(true);
+            if (level != 15){
+                try {
+                    nextLevel();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        animation.play();
+
+    }
+
+    private void nextLevel() throws IOException {
+        level++;
+        restartLevel();
+        runAnimation = false;
+
+
+    }
 
     private void readFile(int i) throws IOException {
 
@@ -246,14 +316,14 @@ public class GameAboutSqures extends Application {
             else if (line.charAt(0) == 'b'){
                 int x = Integer.parseInt(String.valueOf(line.charAt(1)));
                 int y = Integer.parseInt(String.valueOf(line.charAt(2)));
-                Ball newBall = new Ball(x,y,c,playground);
+                Ball newBall = new Ball(y,x,c,playground);
                 balls[x][y] = newBall;
                 playground.addBall(newBall);
             }
             else if (line.charAt(0) == 'a'){
                 int x = Integer.parseInt(String.valueOf(line.charAt(1)));
                 int y = Integer.parseInt(String.valueOf(line.charAt(2)));
-                Arrow newArrow = new Arrow(x,y,line.charAt(3),playground);
+                Arrow newArrow = new Arrow(y,x,line.charAt(3),playground);
                 arrows[x][y] = newArrow;
                 playground.addArrow(newArrow);
             }
@@ -268,13 +338,11 @@ public class GameAboutSqures extends Application {
         array = new Squere[7][7];
         balls = new Ball[7][7];
         arrows = new Arrow[7][7];
+        lastDir.clear();
+        lastSteps.clear();
+        lastStepsDir.clear();
         readFile(level);
     }
-
-
-
-
-    private Color returnColor(char c){return Color.YELLOW;}
 
     private char returnChar(char dir){
         if (dir == 'l') return 'r';
@@ -284,7 +352,21 @@ public class GameAboutSqures extends Application {
         return ' ';
     }
 
-    private void rotateAnimation(Squere s, char direction){}
+    private void rotateAnimation(Squere s, char direction){
+
+        runAnimation = true;
+        Timeline animation = new Timeline(new KeyFrame(Duration.millis(2),event -> {
+            s.rotateArrow();
+        }));
+
+        animation.setCycleCount(s.countCycle(direction));
+        animation.setOnFinished(event -> {
+            runAnimation = false;
+            s.setDirection(direction);
+            s.setRot();
+        });
+        animation.play();
+    }
 
     private ArrayList<Squere> selectSqueres(int i, int j) {
 
@@ -297,10 +379,10 @@ public class GameAboutSqures extends Application {
         while(true){
 
             if (direction == 'l') {
-                k++;
+                k--;
             }
             else if (direction == 'r'){
-                k--;
+                k++;
             }
             else if (direction == 'u'){
                 s--;

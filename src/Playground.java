@@ -19,8 +19,10 @@ public class Playground extends Pane {
         balls = new ArrayList<>();
         squeres = new ArrayList<>();
 
-        setWidth(6*borderPane.getPrefWidth()/7);
+        setWidth(Math.round(6*borderPane.getPrefWidth()/7));
         setHeight(borderPane.getPrefHeight());
+        setMaxWidth(Math.round(6*borderPane.getPrefWidth()/7));
+        setMaxHeight(borderPane.getPrefHeight());
         setBackground();
         paint();
 
