@@ -16,10 +16,11 @@ public class LevelPanel extends GridPane{
     }
 
     private ArrayList<ImageButton> getButtons(){
+        return null;
 
     }
     private Stage getNewStage(){
-
+        return null;
     }
     public void hideStage(){
 

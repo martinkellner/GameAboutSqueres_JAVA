@@ -14,8 +14,8 @@ public class ImageButton extends Button {
 
     public ImageButton(String imageurl, double size, String text){
 
-        setHeight(size);
-        setWidth(size);
+        setMinHeight(size);
+        setMinWidth(size);
 
         if (imageurl != "") {
             Image image = new Image(getClass().getResourceAsStream(imageurl));

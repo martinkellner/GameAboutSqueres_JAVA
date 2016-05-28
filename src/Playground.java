@@ -13,28 +13,32 @@ public class Playground extends Pane {
     private ArrayList<Ball>	balls;
     private ArrayList<Squere> squeres;
 
-    Playground(BorderPane borderPane){
+    public Playground(BorderPane borderPane){
 
         arrows = new ArrayList<>();
         balls = new ArrayList<>();
         squeres = new ArrayList<>();
 
-        setWidth(borderPane.getWidth()/7);
-        setHeight(borderPane.getHeight());
+        setWidth(6*borderPane.getPrefWidth()/7);
+        setHeight(borderPane.getPrefHeight());
         setBackground();
+        paint();
 
     }
 
     public void addArrow(Arrow a){
         arrows.add(a);
+        paint();
     }
 
     public void addBall(Ball b){
         balls.add(b);
+        paint();
     }
 
     public void addSquere(Squere s){
         squeres.add(s);
+        paint();
     }
 
     public void paint(){
@@ -55,12 +59,11 @@ public class Playground extends Pane {
         squeres.clear();
     }
     private void setBackground(){
-
         background = new Rectangle();
         background.setX(0);
         background.setY(0);
-        background.setWidth(getWidth());
         background.setHeight(getHeight());
-        background.setFill(Color.CORAL);
+        background.setWidth(getWidth());
+        background.setFill(Color.web("#FFFFCC"));
     }
 }
