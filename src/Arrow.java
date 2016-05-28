@@ -30,7 +30,7 @@ public class Arrow extends Circle{
 
         if (direction == 'r') setRotate(0);
         if (direction == 'l') setRotate(180);
-        if (direction == 'd') setRotate(270);
-        if (direction == 'u') setRotate(90);
+        if (direction == 'u') setRotate(270);
+        if (direction == 'd') setRotate(90);
     }
 }

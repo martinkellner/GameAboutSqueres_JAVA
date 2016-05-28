@@ -74,7 +74,6 @@ public class GameAboutSqures extends Application {
             }
         });
 
-
         playground.setOnMouseClicked(event -> {
             if (!runAnimation){
                 for (int i = 0; i < array.length;i++){
@@ -144,7 +143,6 @@ public class GameAboutSqures extends Application {
             checkPosition();
             if (checkGame()){
                 levelFinishAimation();
-
             }
         });
 
@@ -218,6 +216,9 @@ public class GameAboutSqures extends Application {
                 if (array[i][j] != null && balls[i][j] !=null && array[i][j].getColor() != balls[i][j].getColor()){
                     return false;
                 }
+                else if (array[i][j] != null && balls[i][j] == null){
+                    return false;
+                }
             }
         }
         return true;
@@ -238,7 +239,17 @@ public class GameAboutSqures extends Application {
                 if (array[i][j] != null && arrows[i][j] != null){
                     if (array[i][j].getDirection() != arrows[i][j].getDirection()){
                         rotateAnimation(array[i][j],arrows[i][j].getDirection());
+                        array[i][j].setStrokeSquere(Color.GREY);
                     }
+                    else{
+                        array[i][j].setStrokeSquere(Color.GREY);
+                    }
+
+                }
+
+
+                else if (array[i][j] != null){
+                    array[i][j].setStrokeSquere(Color.TRANSPARENT);
                 }
             }
         }
@@ -272,6 +283,9 @@ public class GameAboutSqures extends Application {
                     e.printStackTrace();
                 }
             }
+            else {
+
+            }
         });
         animation.play();
 
@@ -281,8 +295,6 @@ public class GameAboutSqures extends Application {
         level++;
         restartLevel();
         runAnimation = false;
-
-
     }
 
     private void readFile(int i) throws IOException {
@@ -329,6 +341,7 @@ public class GameAboutSqures extends Application {
             }
         }
         aktualizeArray();
+        checkPosition();
         bufferedReader.close();
     }
 

@@ -164,7 +164,7 @@ public class Squere extends Rectangle{
     void setStrokeSquere(Color color){
 
         setStrokeType(StrokeType.INSIDE);
-        setStrokeWidth(2);
+        setStrokeWidth(3);
         setStroke(color);
     }
     void setTransparentShadow(){
