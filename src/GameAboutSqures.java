@@ -87,7 +87,7 @@ public class GameAboutSqures extends Application {
         grid = vBoxRight.getGrid();
         grid.setOnMousePressed(event -> {
             primaryStage.hide();
-            newStage.show();
+            levelPanel.showStage();
         });
 
         buttons = levelPanel.getButtons();
@@ -217,7 +217,8 @@ public class GameAboutSqures extends Application {
     }
 
     /**
-     * Posunie kocky na ich predchazajuce miesto, ak su zapametane nejake kroky spat. Nastavi kockam predchadzajuci smer
+     * Posunie kocky na ich predchazajuce miesto, ak su zapametane nejake kroky spat.
+     * Nastavi kockam predchadzajuci smer.
      */
     private void backStepAnimation(){
 
@@ -322,7 +323,8 @@ public class GameAboutSqures extends Application {
     }
 
     /**
-     * Animacia na otocenie kociek pri uspesnom dokonceni levelu
+     * Animacia na otocenie kociek pri uspesnom dokonceni levelu, vsetky kocky sa otocia o 360 stupnov. Potom sa zavola
+     * fukcia pre dalsi level.
      */
     private void levelFinishAimation(){
 
@@ -344,9 +346,6 @@ public class GameAboutSqures extends Application {
                     e.printStackTrace();
                 }
             }
-            else {
-
-            }
         });
         animation.play();
 
@@ -363,8 +362,8 @@ public class GameAboutSqures extends Application {
     }
 
     /**
-     *
-     * @param i
+     * Precita kazdy riadok suboru, ktory je v poli files na indexe i. Vytvori objekty podla riadku (popis v README.txt)
+     * @param i - index v poli array
      * @throws IOException
      */
     private void readFile(int i) throws IOException {
@@ -415,7 +414,12 @@ public class GameAboutSqures extends Application {
         bufferedReader.close();
     }
 
+    /**
+     * Vymaze obsah vsetkych ulozisk a zavola funkciu readfile na parametry indexu aktualneho levelu.
+     * @throws IOException
+     */
     public void	restartLevel() throws IOException {
+
         playground.reset();
         arrayListSqures.clear();
         array = new Squere[7][7];
@@ -428,6 +432,11 @@ public class GameAboutSqures extends Application {
         runAnimation = false;
     }
 
+    /**
+     * Vrati opacny smer, ak right tak left, ...
+     * @param dir smer ku ktoremu ma vratit opacny
+     * @return Charekter reprezentujuci opacny smer.
+     */
     private char returnChar(char dir){
         if (dir == 'l') return 'r';
         if (dir == 'r') return 'l';
@@ -436,6 +445,12 @@ public class GameAboutSqures extends Application {
         return ' ';
     }
 
+    /**
+     * Animacia na otocie sipky, zavola funkciu na zistenie o kolko stupnov sa ma otocit a otoci a nastavi uz smer na
+     * ktory bola sipka otocena ako smer kocky.
+     * @param s - kocka ktora ktorej sipka sa ma otocit
+     * @param direction - na aky smer sa ma otocit.
+     */
     private void rotateAnimation(Squere s, char direction){
 
         runAnimation = true;
@@ -452,6 +467,12 @@ public class GameAboutSqures extends Application {
         animation.play();
     }
 
+    /**
+     * Vyberie kocky pre posuvanie, vrati list kociek ktora posunie kocka na indexoch i,j v poli array.
+     * @param i - index v poli array
+     * @param j - index v poli array
+     * @return ArrayList kociek
+     */
     private ArrayList<Squere> selectSqueres(int i, int j) {
 
         ArrayList<Squere> squeres = new ArrayList<>();
