@@ -18,5 +18,10 @@ Kodovanie suborov pre levely:
             urcuje smer natocenia sipky
 
 Vsetky obrazky su z iconfinder.com (su free)
+Textove subory su v /levels
+Dokumentacia v subore /doc
+
+
+Projekt bol vytvoreny v IntelliJ IDEA, preto su obrazky v /src/images
+
 Projekt vytvoril Martin Kellner na predmet Programovanie4
-Projekt som mam aj na GitHube
